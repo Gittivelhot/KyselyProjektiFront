@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import { AgGridReact } from "ag-grid-react";
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-material.css';
+import Button from "@mui/material/Button";
 
 
 function PollList () {
@@ -32,16 +33,17 @@ function PollList () {
         <div className="ag-theme-material"
       style={{height: 600, width:"100%", margin: "auto"}}>
 
-            <AgGridReact
-        rowData={polls}
-        columnDefs={columnDefs}>
-          
+        <AgGridReact
+            rowData={polls}
+            columnDefs={columnDefs}>
         </AgGridReact>
+
+        <Button style={{margin: 10, display: "flex", marginLeft: "left"}} variant= "outlined">Add poll</Button>
         </div>
     )
 
 
-    
+
 }
 
 export default PollList;
