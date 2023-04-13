@@ -1,8 +1,11 @@
 import React, {useState, useEffect} from "react";
-import { AgGridReact } from "ag-grid-react";
-import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-material.css';
-import Button from "@mui/material/Button";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
 
 function PollList () {
@@ -12,38 +15,42 @@ function PollList () {
     useEffect(()=>fetchData(), []);
 
     const fetchData = ()=> {
-        fetch("https://carrestapi.herokuapp.com/cars")
+        fetch("http://localhost:8080/jsonpolls")
         .then(response => response.json())
-        .then(data =>setPolls(data._embedded.cars))
+        .then(data =>setPolls(data))
         .catch(err => console.error(err))
+
       };
 
-    const [columnDefs] = useState([
-        {field: "brand", sortable: true, filter: true, flex: 1,},
-        {field: "model", sortable: true, filter: true, flex:1},
-        {field: "fuel", sortable: true, filter: true, flex:1},
-        {field: "year", sortable: true, filter: true,flex:1},
-        {field: "price", sortable: true, filter: true,flex:1},
-       
-
-        
-    ])
-
-    return (
-        <div className="ag-theme-material"
-      style={{height: 600, width:"100%", margin: "auto"}}>
-
-        <AgGridReact
-            rowData={polls}
-            columnDefs={columnDefs}>
-        </AgGridReact>
-
-        <Button style={{margin: 10, display: "flex", marginLeft: "left"}} variant= "outlined">Add poll</Button>
-        </div>
-    )
-
-
-
+      return (
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Poll Id</TableCell>
+                <TableCell align="right">Poll title</TableCell>
+                <TableCell align="right">Question 1</TableCell>
+                <TableCell align="right">Question 2</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {polls.map((poll) => (
+                <TableRow
+                  key={poll.id}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {poll.poll_id}
+                  </TableCell>
+                  <TableCell align="right">{poll.title}</TableCell>
+                  <TableCell align="right">{poll.questions[0].query}</TableCell>
+                  <TableCell align="right">{poll.questions[1].query}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      );
 }
 
 export default PollList;
