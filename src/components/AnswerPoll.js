@@ -9,11 +9,11 @@ import DialogTitle from '@mui/material/DialogTitle';
 export default function AnswerPoll(props){
     const [open, setOpen] = React.useState(false);
     const [poll, setPoll] = React.useState({
-        questions: ""
+        title:"",questions: ""
     });
 
     const handleClickOpen = () => {
-        setPoll ({query: props.polls.questions.query});
+        setPoll ({title: props.poll.title})
         setOpen(true);
     };
 
@@ -28,7 +28,7 @@ export default function AnswerPoll(props){
     const updateAnswer = () => {
         props.updateAnswer(poll, props.polls.answer.query)
     }
-    props.polls.map(poll =>{
+    
     return (
         <div key={poll.id}>
             <Button variant="outlined" onClick={handleClickOpen}>
@@ -40,8 +40,8 @@ export default function AnswerPoll(props){
                     <TextField
                     autoFocus
                     margin="dense"
-                    name="question"
-                    value={poll.questions}
+                    name="title"
+                    value={poll.title}
                     onChange={e => handleInputChange(e)}
                     label="question"
                     fullWidth
@@ -54,5 +54,5 @@ export default function AnswerPoll(props){
             </Dialog>
         </div>
     )
-})
+
 }

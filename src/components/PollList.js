@@ -6,6 +6,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import AnswerPoll from "./AnswerPoll";
 
 
 
@@ -49,6 +50,7 @@ function PollList () {
                   <TableCell align="right">{poll.title}</TableCell>
                   <TableCell align="right">{poll.questions[0].query}</TableCell>
                   <TableCell align="right">{poll.questions[1].query}</TableCell>
+                  <TableCell align="right">{<AnswerPoll/>}</TableCell>
                   
                 </TableRow>
               ))}
