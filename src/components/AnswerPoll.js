@@ -13,7 +13,7 @@ export default function AnswerPoll(props){
     });
 
     const handleClickOpen = () => {
-        setPoll ({query: props.polls.questions[0].query});
+        setPoll ({query: props.polls.questions.query});
         setOpen(true);
     };
 
@@ -28,8 +28,9 @@ export default function AnswerPoll(props){
     const updateAnswer = () => {
         props.updateAnswer(poll, props.polls.answer.query)
     }
+    props.polls.map(poll =>{
     return (
-        <div>
+        <div key={poll.id}>
             <Button variant="outlined" onClick={handleClickOpen}>
                 Vastaa kyselyyn
             </Button>
@@ -53,4 +54,5 @@ export default function AnswerPoll(props){
             </Dialog>
         </div>
     )
+})
 }
