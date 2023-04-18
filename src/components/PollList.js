@@ -8,8 +8,6 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import AnswerPoll from "./AnswerPoll";
 
-
-
 function PollList () {
 
     const [polls, setPolls] = React.useState([]);
@@ -19,39 +17,27 @@ function PollList () {
     const fetchData = ()=> {
         fetch("http://localhost:8080/jsonpolls")
         .then(response => response.json())
-        .then(data =>setPolls(data))
+        .then(data =>{setPolls(data); console.log(data)})
         .catch(err => console.error(err))
       };
-
-    const updateAnswer = (poll) => {
-      
-    }
 
       return (
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>Poll Id</TableCell>
-                <TableCell align="right">Poll title</TableCell>
-                <TableCell align="right">Question 1</TableCell>
-                <TableCell align="right">Question 2</TableCell>
+                <TableCell align="center">Poll title</TableCell>
+                <TableCell align="center">Answer</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {polls.map((poll) => (
                 <TableRow
-                  key={poll.id}
+                  key={`poll-${poll.poll_id}`}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
-                  <TableCell component="th" scope="row">
-                    {poll.poll_id}
-                  </TableCell>
-                  <TableCell align="right">{poll.title}</TableCell>
-                  <TableCell align="right">{poll.questions[0].query}</TableCell>
-                  <TableCell align="right">{poll.questions[1].query}</TableCell>
-                  <TableCell align="right">{<AnswerPoll/>}</TableCell>
-                  
+                  <TableCell align="center">{poll.title}</TableCell>
+                  <TableCell align="center">{<AnswerPoll poll={poll}/>}</TableCell> 
                 </TableRow>
               ))}
             </TableBody>

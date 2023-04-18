@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -6,50 +6,53 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
-export default function AnswerPoll(props){
-    const [open, setOpen] = React.useState(false);
-    const [poll, setPoll] = React.useState({
-        title:"",questions: ""
-    });
+export default function AnswerPoll({poll}){
+    const [open, setOpen] = useState(false);
+    const [inputValues, setInputValues] = useState({});
 
     const handleClickOpen = () => {
-        setPoll ({title: props.poll.title})
         setOpen(true);
     };
 
     const handleClose = () => {
         setOpen(false);
-    }
-
-    const handleInputChange = (event) => {
-        setPoll({...poll, [event.target.name]: event.target.value})
+        setInputValues({});
     }
 
     const updateAnswer = () => {
-        props.updateAnswer(poll, props.polls.answer.query)
+        const answer = {poll:poll.poll_id, answers:inputValues}
+        console.log(answer)
+        //LÄHETÄ TÄSSÄ BACKENDIIN!
+        handleClose();
     }
-    
     return (
-        <div key={poll.id}>
-            <Button variant="outlined" onClick={handleClickOpen}>
+        <div>
+            <Button variant="contained" onClick={handleClickOpen}>
                 Vastaa kyselyyn
             </Button>
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Vastaa kyselyyn</DialogTitle>
+                <DialogTitle>Vastaa kyselyyn: {poll.title}</DialogTitle>
                 <DialogContent>
+                {poll.questions.map((question) => (
                     <TextField
+                    key={`question-${question.id}`}
                     autoFocus
                     margin="dense"
                     name="title"
-                    value={poll.title}
-                    onChange={e => handleInputChange(e)}
-                    label="question"
+                    label={question.query}
                     fullWidth
-                    variant="standard"/>
+                    variant="standard" 
+                    onChange={(event) =>
+                        setInputValues({
+                            ...inputValues,
+                            [`question-${question.id}`]: event.target.value,
+                        })
+                    }/>
+                ))}
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={updateAnswer}>Tallenna</Button>
+                    <Button onClick={updateAnswer} variant="contained" color="success">Tallenna</Button>
+                    <Button onClick={handleClose} variant="contained" color="error">Peruuta</Button>
                 </DialogActions>
             </Dialog>
         </div>
