@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useEffect} from "react";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -6,6 +6,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import AnswerPoll from "./AnswerPoll";
 
 
 function PollList () {
@@ -19,8 +20,11 @@ function PollList () {
         .then(response => response.json())
         .then(data =>setPolls(data))
         .catch(err => console.error(err))
-
       };
+
+    const updateAnswer = (poll) => {
+      
+    }
 
       return (
         <TableContainer component={Paper}>
@@ -44,7 +48,7 @@ function PollList () {
                   </TableCell>
                   <TableCell align="right">{poll.title}</TableCell>
                   <TableCell align="right">{poll.questions[0].query}</TableCell>
-                  <TableCell align="right">{poll.questions[1].query}</TableCell>
+                  <TableCell align="right"><AnswerPoll/></TableCell>
                 </TableRow>
               ))}
             </TableBody>
