@@ -1,11 +1,7 @@
-import React, {useEffect} from "react";
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import React, {useEffect, useState} from "react";
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-material.css';
+import { AgGridReact } from "ag-grid-react";
 import AnswerPoll from "./AnswerPoll";
 
 
@@ -23,37 +19,23 @@ function PollList () {
       };
 
     const updateAnswer = (poll) => {
-      
     }
-
+     const [columnDefs] = useState([
+      {field: "title"},
+      {cellRenderer: row => <AnswerPoll updateAnswer={updateAnswer} poll= {row.data}/>},
+      {field: "title.question.query"}
+     ])
+      
       return (
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Poll Id</TableCell>
-                <TableCell align="right">Poll title</TableCell>
-                <TableCell align="right">Question 1</TableCell>
-                <TableCell align="right">Question 2</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {polls.map((poll) => (
-                <TableRow
-                  key={poll.id}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {poll.poll_id}
-                  </TableCell>
-                  <TableCell align="right">{poll.title}</TableCell>
-                  <TableCell align="right">{poll.questions[0].query}</TableCell>
-                  <TableCell align="right"><AnswerPoll/></TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <div className="ag-theme-material"
+        style={{height: 600, width:"90%", margin: "auto"}}>
+          
+           < AgGridReact
+        rowData={polls}
+        columnDefs={columnDefs}>
+          
+        </AgGridReact>
+        </div>
       );
 }
 

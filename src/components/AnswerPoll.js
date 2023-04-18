@@ -13,7 +13,7 @@ export default function AnswerPoll(props){
     });
 
     const handleClickOpen = () => {
-        setPoll ({questions: props.polls.questions[0].query});
+        setPoll ({query: props.polls.questions[0].query});
         setOpen(true);
     };
 
