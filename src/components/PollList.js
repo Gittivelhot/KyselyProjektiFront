@@ -15,7 +15,7 @@ function PollList () {
     useEffect(()=>fetchData(), []);
 
     const fetchData = ()=> {
-        fetch("http://localhost:8080/jsonpolls")
+        fetch("http://localhost:8080/json/polls")
         .then(response => response.json())
         .then(data =>{setPolls(data); console.log(data)})
         .catch(err => console.error(err))
