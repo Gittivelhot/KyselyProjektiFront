@@ -1,37 +1,47 @@
-import { AgGridReact } from "ag-grid-react";
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-material.css';
-import React, {useState, useEffect} from "react";
+import React, { useState } from "react";
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
 
-function AnswerList (){
+function AnswerList({ poll }) {
+  const [open, setOpen] = useState(false);
 
-    const [answer, setAnswer] = useState([]);
-    useEffect(()=>fetchData(), []);
 
-    const fetchData = () =>{
-        fetch("http://localhost:8080/jsonanswers")
-        .then(response => response.json())
-        .then(data =>{setAnswer(data)})
-        .catch(err => console.error(err))
-    }
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
-   
+  const handleClose = () => {
+    setOpen(false);
+  }
 
-    const [columnDefs] = useState([
-        {field:"reply_id", sortable: true, filter: true, flex: 1 },
-        {field:"reply",sortable: true, filter: true, flex: 1},
-        
-    ])
 
-    return(
-        <div className="ag-theme-material"
-      style={{height: 600, width:"90%", margin: "auto"}}>
-      <AgGridReact
-        rowData={answer}
-        columnDefs = {columnDefs}>
-      </AgGridReact>
-      </div>
-    )
+  return (
+    <div>
+
+      <Button variant="contained" onClick={handleClickOpen}>
+        Katso vastaukset
+      </Button>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Katso vastaukset kyselyyn: {poll.title}</DialogTitle>
+        <DialogContent>
+          {poll.questions.map((question) => (
+            <div key={`question-${question.id}`}>
+              <p><b>{question.query}</b></p>
+            </div>
+          ))}
+
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} variant="contained" color="error">Peruuta</Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  )
 
 }
 export default AnswerList;

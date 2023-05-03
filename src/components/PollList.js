@@ -7,6 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import AnswerPoll from "./AnswerPoll";
+import AnswerList from "./ListAnswers";
 
 function PollList () {
 
@@ -28,6 +29,7 @@ function PollList () {
               <TableRow>
                 <TableCell align="center">Poll title</TableCell>
                 <TableCell align="center">Answer</TableCell>
+                <TableCell align="center">Check answers</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -37,7 +39,8 @@ function PollList () {
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell align="center">{poll.title}</TableCell>
-                  <TableCell align="center">{<AnswerPoll poll={poll}/>}</TableCell> 
+                  <TableCell align="center">{<AnswerPoll poll={poll}/>}</TableCell>
+                  <TableCell align="center">{<AnswerList poll={poll}/>}</TableCell> 
                 </TableRow>
               ))}
             </TableBody>
