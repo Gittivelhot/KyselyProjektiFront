@@ -8,7 +8,19 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 export default function AnswerPoll({poll}){
     const [open, setOpen] = useState(false);
-    const [inputValues, setInputValues] = useState({});
+
+    const initialInputValues = () => {
+        let initial = {}
+        poll.questions.forEach(question => {
+            initial = {
+                ...initial, 
+                [`${question.id}`]: "-"
+            }
+        });
+        return initial
+    }
+    
+    const [inputValues, setInputValues] = useState(initialInputValues());
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -16,22 +28,35 @@ export default function AnswerPoll({poll}){
 
     const handleClose = () => {
         setOpen(false);
-        setInputValues({});
+        setInputValues(initialInputValues());
     }
 
+
     const updateAnswer = () => {
-        const answer = {poll:poll.poll_id, answers:inputValues}
+        
+        const answers = Object.keys(inputValues).map(question => {
+            return {question: question, answer: inputValues[question]};
+        });
+        const answer = {poll_id:poll.poll_id, answers:answers}
         console.log(answer)
-        //LÄHETÄ TÄSSÄ BACKENDIIN!
+        fetch('http://localhost:8080/json/answers', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(answer)
+        })
+        .catch(error => console.error(error))
         handleClose();
     }
+
     return (
         <div>
             <Button variant="contained" onClick={handleClickOpen}>
-                Vastaa kyselyyn
+                Answer poll
             </Button>
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Vastaa kyselyyn: {poll.title}</DialogTitle>
+                <DialogTitle>Answer poll: {poll.title}</DialogTitle>
                 <DialogContent>
                 {poll.questions.map((question) => (
                     <TextField
@@ -45,14 +70,14 @@ export default function AnswerPoll({poll}){
                     onChange={(event) =>
                         setInputValues({
                             ...inputValues,
-                            [`question-${question.id}`]: event.target.value,
+                            [`${question.id}`]: event.target.value,
                         })
                     }/>
                 ))}
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={updateAnswer} variant="contained" color="success">Tallenna</Button>
-                    <Button onClick={handleClose} variant="contained" color="error">Peruuta</Button>
+                    <Button onClick={handleClose} variant="outlined" color="error">Cancel</Button>
+                    <Button onClick={updateAnswer} variant="contained" color="success">Save</Button>
                 </DialogActions>
             </Dialog>
         </div>
